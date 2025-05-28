@@ -1,0 +1,17 @@
+{
+  "name": "logo-gpt-vision",
+  "version": "1.0.0",
+  "description": "Capture logo on mobile, send to OpenAI GPT-4 Vision API, and get business insights.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.19.2",
+    "openai": "^4.28.0"
+  }
+}

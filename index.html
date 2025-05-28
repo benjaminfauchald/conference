@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logo ID - GPT Vision</title>
+</head>
+<body>
+  <h2>Take a Logo Photo</h2>
+  
+  <!-- Directly opens camera on iPhone and Android -->
+  <input type="file" id="logoInput" accept="image/*" capture="environment"><br><br>
+  
+  <button onclick="sendToServer()">Send to GPT</button>
+
+  <p id="status"></p>
+  <pre id="result"></pre>
+
+  <script>
+    async function sendToServer() {
+      const input = document.getElementById('logoInput');
+      const status = document.getElementById('status');
+      const result = document.getElementById('result');
+      const file = input.files[0];
+
+      if (!file) {
+        alert("Please take a logo photo first.");
+        return;
+      }
+
+      status.textContent = "Reading image...";
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result;
+
+        status.textContent = "Sending to GPT...";
+
+        const res = await fetch("/gpt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: base64 })
+        });
+
+        const data = await res.json();
+        status.textContent = "Done!";
+        result.textContent = data.result || JSON.stringify(data);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
