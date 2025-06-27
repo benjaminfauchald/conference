@@ -26,7 +26,22 @@
     }
 
     input[type="file"] {
+      display: none;
+    }
+
+    .camera-btn {
+      background-color: #007aff;
+      border: none;
+      color: white;
+      padding: 12px 24px;
       border-radius: 0.75rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .camera-btn:hover {
+      background-color: #0051d5;
     }
 
     .dot-loader span {
@@ -70,13 +85,13 @@
   <div class="ios-container">
     <h3 class="text-center mb-4">🤝 Conference Buddy</h3>
 
-    <div class="mb-3">
-      <label for="logoInput" class="form-label">Take a photo of a company logo:</label>
+    <div class="mb-3 text-center">
+      <label class="form-label d-block">Take a photo of a company logo:</label>
+      <button class="camera-btn" onclick="document.getElementById('logoInput').click()">
+        📷 Take Photo
+      </button>
       <input type="file" id="logoInput" accept="image/*" capture="environment" class="form-control">
-    </div>
-
-    <div class="d-grid mb-3">
-      <button class="btn btn-primary" onclick="sendToBuddy()">Ask Buddy</button>
+      <div id="fileName" class="mt-2 text-muted" style="font-size: 0.9rem;"></div>
     </div>
 
     <div id="status" class="text-center text-muted mb-2"></div>
@@ -103,6 +118,15 @@
       result.innerHTML = '';
       status.textContent = '';
       spinner.classList.add('d-none');
+      
+      const fileName = document.getElementById('fileName');
+      if (input.files[0]) {
+        fileName.textContent = `Selected: ${input.files[0].name}`;
+        // Automatically send to Buddy when photo is taken
+        sendToBuddy();
+      } else {
+        fileName.textContent = '';
+      }
     });
 
     async function sendToBuddy() {
